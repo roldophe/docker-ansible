@@ -19,3 +19,14 @@ Step 4: Check Python Packages Installed for Docker
 ```
 python3 -m pip list | grep docker
 ```
+
+
+Step 5: Install Portainer Using Ansible Playbook
+```bash
+ansible-playbook install_docker.yaml
+```
+
+Step 6: Install Wordpress Using Ansible Playbook
+```bash
+ansible-playbook install_wordpress.yaml
+```
