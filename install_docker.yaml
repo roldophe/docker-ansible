@@ -41,3 +41,8 @@
         name:
           - docker
           - docker-compose
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: latest
