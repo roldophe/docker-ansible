@@ -12,7 +12,6 @@
           - /var/run/docker.sock:/var/run/docker.sock
           - portainer_data:/data
         restart_policy: always
-        api_version: 1.25
     - name: Deploy Watchtower
       community.docker.docker_container:
         name: watchtower
