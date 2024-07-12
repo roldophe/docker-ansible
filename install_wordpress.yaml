@@ -11,7 +11,7 @@
         name: wordpress
         image: wordpress:latest
         ports:
-          - "80:80"
+          - "8084:80"
         networks:
           - name: wordpress
         volumes:
