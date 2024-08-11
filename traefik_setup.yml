@@ -1,0 +1,76 @@
+---
+- name: Setup Traefik with Docker using Ansible
+  hosts: all
+  become: true
+
+  vars:
+    traefik_config: |
+      global:
+        checkNewVersion: false
+        sendAnonymousUsage: false
+
+      accesslog:
+        format: common
+        filePath: /var/log/traefik/access.log
+
+      api:
+        dashboard: true
+        insecure: true
+
+      entryPoints:
+        web:
+          address: ":80"
+          http:
+            redirections:
+              entryPoint:
+                to: websecure
+                scheme: https
+        websecure:
+          address: ":443"
+
+      certificatesResolvers:
+        staging:
+          acme:
+            email: khoemradom8212@gmail.com
+            storage: /ssl-certs/acme-staging.json
+            caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+            httpChallenge:
+              entryPoint: web
+
+      providers:
+        docker:
+          exposedByDefault: false
+        file:
+          directory: "/etc/traefik"
+          watch: true
+
+  tasks:
+    - name: Ensure the directory exists for Traefik configuration
+      file:
+        path: "/etc/traefik"
+        state: directory
+
+    - name: Create the traefik.yaml configuration file
+      copy:
+        content: "{{ traefik_config }}"
+        dest: "/etc/traefik/traefik.yaml"
+
+    - name: Create Docker volume for Traefik SSL certs
+      community.general.docker_volume:
+        name: traefik-ssl-certs
+        state: present
+
+    - name: Deploy Traefik with Docker
+      community.general.docker_container:
+        name: traefik
+        image: "docker.io/library/traefik:v3.0.4"
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "80:80"
+          - "443:443"
+          - "8080:8080"
+        volumes:
+          - "/etc/traefik:/etc/traefik"
+          - "traefik-ssl-certs:/ssl-certs"
+          - "/var/run/docker.sock:/var/run/docker.sock:ro"

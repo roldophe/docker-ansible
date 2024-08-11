@@ -1,2 +1,5 @@
-[docker-ansible]
-54.169.49.243
+[worker]
+34.87.184.201 ansible_user=radomkhoem ansible_ssh_private_key_file=~/.ssh/devops
+
+#[orbstack]
+#ubuntu@orb  ansible_user=radomkhoem ansible_ssh_private_key_file=~/.orbstack/ssh/id_ed25519
