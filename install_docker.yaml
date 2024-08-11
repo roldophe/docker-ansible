@@ -53,21 +53,3 @@
     - name: Display Docker version
       debug:
         msg: "Docker version is {{ docker_version.stdout }}"
-
-
-
-#    - name: Install python3-pip
-#      apt:
-#        name: python3-pip
-#        state: present
-#
-#    - name: Install Python SDK
-#      pip:
-#        name:
-#          - docker
-#          - docker-compose
-#      become: yes
-#    - name: Install Nginx
-#      apt:
-#        name: nginx
-#        state: latest
